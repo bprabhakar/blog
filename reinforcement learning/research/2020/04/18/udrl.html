@@ -119,7 +119,7 @@ window.onload = wrap_img;
 
 <p>If you want to deep dive into the paper and understand it more, you can watch this excellent <a href="https://www.youtube.com/watch?v=RrvC8YW0pT0">video</a>. But tl;dr - they’ve devised a new supervised learning algorithm to solve reinforcement learning tasks. No policy gradients, no value function estimations, just plain old supervised learning. Here’s a figure from the paper to illustrate this better:</p>
 
-<p><img src="images/udrl/Untitled.png" alt="Untitled"></p>
+<p><img src="https://raw.githubusercontent.com/bprabhakar/blog/master/images/udrl/Untitled.png" alt="Untitled"></p>
 
 <p>What the behavior function is trying to predict is — <em>given this observation, what is the best action to take to achieve this desired return (total reward) in this desired horizon (total timesteps)</em>. Instead of learning/modeling rewards they’re used as inputs (commands) to directly predict actions.</p>
 
@@ -142,7 +142,7 @@ window.onload = wrap_img;
 
 <p>To answer the above questions, I implemented the algorithm to solve the Sparse Lunar Lander task (one of the tasks mentioned in the paper). The task is to learn an agent that is able to successfully land a lunar lover as shown below:</p>
 
-<p><img src="../images/udrl/lunar-lander-demo.gif" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/lunar-lander-demo.gif"></p>
+<p><img src="https://raw.githubusercontent.com/bprabhakar/blog/master/images/udrl/lunar-lander-demo.gif" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/lunar-lander-demo.gif"></p>
 
 <p>I manually converted the “LunarLander-v2” environment from OpenAI Gym to a sparse one by modifying the reward function as follows:</p>
 
@@ -160,7 +160,7 @@ window.onload = wrap_img;
   <li>
     <p>Model architecture:</p>
 
-    <p><img src="../images/udrl/NN.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/Untitled%201.png"></p>
+    <p><img src="https://raw.githubusercontent.com/bprabhakar/blog/master/images/udrl/NN.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/Untitled%201.png"></p>
   </li>
   <li>Used <a href="http://comet.ml/">comet.ml</a> for metric tracking</li>
 </ul>
@@ -174,7 +174,7 @@ window.onload = wrap_img;
 
 <p>Answer - surprisingly quick. I was able to get the following reward curve in just my <strong>third</strong>(!) run attempt; without needing to tinker around a lot with the hyper-parameters. I don’t remember the last time that happened for any of the policy gradient based algorithms.</p>
 
-<p><img src="../images/udrl/sparse_lunar_lander.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/sparse_lunar_lander.png"></p>
+<p><img src="https://raw.githubusercontent.com/bprabhakar/blog/master/images/udrl/sparse_lunar_lander.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/sparse_lunar_lander.png"></p>
 
 <p>Of course, this needs to be taken with a grain of salt because “Lunar Lander” is a relatively simple task. But if you look at the implemented algorithm in code, you’ll agree that the algorithm is ridiculously simple!</p>
 
@@ -183,13 +183,13 @@ window.onload = wrap_img;
 
 <p>My first impression on reading the paper was that the idea sounds very similar to Imitation Learning. Consider the following excerpt from the paper describing the replay buffer strategy:</p>
 
-<p><img src="../images/udrl/replay_buffer.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/Untitled%202.png"></p>
+<p><img src="https://raw.githubusercontent.com/bprabhakar/blog/master/images/udrl/replay_buffer.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/Untitled%202.png"></p>
 
 <p>So as training progresses, by design the trajectories stored in the buffer start looking more and more like <em>expert trajectories</em> (episodes with high returns). And learning just a mapping from states to actions on these expert trajectories (re: Imitation Learning) should suffice. This idea is actually better expressed in this prior work called — <a href="https://arxiv.org/abs/1806.05635">Self-Imitation Learning</a>.</p>
 
 <p>To test this hypothesis, I ran the following experiment — trying to learn the optimal actions to take by <strong>masking out the command inputs</strong> of the behavior function (keeping everything else identical). So effectively, just learning to predict actions from just the observations alone. And here’s what happened:</p>
 
-<p><img src="../images/udrl/sparse_lunar_lander_masked_cmd.jpeg" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/sparse_lunar_lander_masked_cmd.jpeg"></p>
+<p><img src="https://raw.githubusercontent.com/bprabhakar/blog/master/images/udrl/sparse_lunar_lander_masked_cmd.jpeg" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/sparse_lunar_lander_masked_cmd.jpeg"></p>
 
 <p>Clearly, having <em>commands</em> as inputs to the behavior function make a difference. My guess is that having these commands help the agent further distinguish different types of high return trajectories, in turn helping it learn faster. This obviously needs to be further tested on more complex environments, but the results from my micro-experiment are definitely encouraging.</p>
 
