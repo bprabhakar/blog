@@ -119,7 +119,7 @@ window.onload = wrap_img;
 
 <p>If you want to deep dive into the paper and understand it more, you can watch this excellent <a href="https://www.youtube.com/watch?v=RrvC8YW0pT0">video</a>. But tl;dr - they’ve devised a new supervised learning algorithm to solve reinforcement learning tasks. No policy gradients, no value function estimations, just plain old supervised learning. Here’s a figure from the paper to illustrate this better:</p>
 
-<p><img src="../images/udrl/Untitled.png" alt="Is%20Upside%20Down%20Reinforcement%20Learning%20Imitation%20Le/Untitled.png"></p>
+<p><img src="images/udrl/Untitled.png" alt="Untitled"></p>
 
 <p>What the behavior function is trying to predict is — <em>given this observation, what is the best action to take to achieve this desired return (total reward) in this desired horizon (total timesteps)</em>. Instead of learning/modeling rewards they’re used as inputs (commands) to directly predict actions.</p>
 
